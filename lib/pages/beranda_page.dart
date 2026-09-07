@@ -5,12 +5,6 @@ import 'favorit_page.dart';
 import 'tentang_page.dart';
 import 'tambah_kontak_page.dart';
 
-// Halaman Beranda (halaman utama aplikasi)
-// Terdiri dari:
-// - AppBar
-// - Navigation Drawer (menu: Kontak, Tambah Kontak, Favorit, Tentang Saya)
-// - TabBar & TabBarView (tab: Kontak, Favorit)
-// - FloatingActionButton (menambah kontak baru, hanya tampil di tab Kontak)
 class BerandaPage extends StatefulWidget {
   const BerandaPage({super.key});
 
@@ -127,7 +121,9 @@ class _BerandaPageState extends State<BerandaPage>
               onTap: () => _pilihMenuDrawer(_tabKontak),
             ),
             ListTile(
-              leading: const Icon(Icons.person_add),
+              leading: CircleAvatar(
+                child: const Icon(Icons.person_add),
+              ),
               title: const Text('Tambah Kontak'),
               onTap: () => _pilihMenuDrawer(-1),
             ),

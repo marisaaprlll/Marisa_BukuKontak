@@ -19,7 +19,7 @@ class KontakPage extends StatelessWidget {
   Widget build(BuildContext context) {
     if (daftarKontak.isEmpty) {
       return const Center(
-        child: Text('Belum ada kontak. Tekan tombol (+) untuk menambah.'),
+        child: Text('Belum ada kontak. Tekan tombol (+) untuk menambah.'),  
       );
     }
 
@@ -32,9 +32,7 @@ class KontakPage extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           child: ListTile(
             leading: CircleAvatar(
-              child: Text(
-                kontak.nama.isNotEmpty ? kontak.nama[0].toUpperCase() : '?',
-              ),
+              child: Text(kontak.inisialNamaDepan),
             ),
             title: Text(kontak.nama),
             subtitle: Text('${kontak.email}\n${kontak.noHp}'),

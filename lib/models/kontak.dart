@@ -4,6 +4,11 @@ class Kontak {
   final String email;
   final String noHp;
 
+  String get inisialNamaDepan {
+    final namaBersih = nama.trim();
+    return namaBersih.isNotEmpty ? namaBersih[0].toUpperCase() : '?';
+  }
+
   Kontak({
     required this.nama,
     required this.email,

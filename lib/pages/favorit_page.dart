@@ -11,7 +11,9 @@ class FavoritPage extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Card(
         child: ListTile(
-          leading: const Icon(Icons.person, size: 40, color: Colors.grey),
+          leading: CircleAvatar(
+            child: const Text('R'),
+          ),
           title: const Text(
             'Rosyidah Alif Hakimah',
             style: TextStyle(fontWeight: FontWeight.bold),
