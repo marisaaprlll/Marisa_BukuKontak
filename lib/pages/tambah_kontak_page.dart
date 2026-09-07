@@ -30,19 +30,17 @@ class _TambahKontakPageState extends State<TambahKontakPage> {
   }
 
   void _simpanKontak() {
-    if (_formKey.currentState!.validate()) {
-      final kontakBaru = Kontak(
-        nama: _namaController.text.trim(),
-        email: _emailController.text.trim(),
-        noHp: _noHpController.text.trim(),
-        kategori: _kategoriController.text.trim().isEmpty
-            ? null
-            : _kategoriController.text.trim(),
-      );
+    final kontakBaru = Kontak(
+      nama: _namaController.text.trim(),
+      email: _emailController.text.trim(),
+      noHp: _noHpController.text.trim(),
+      kategori: _kategoriController.text.trim().isEmpty
+          ? null
+          : _kategoriController.text.trim(),
+    );
 
-      // Kirim data kontak baru kembali ke Halaman Kontak
-      Navigator.pop(context, kontakBaru);
-    }
+    // Kirim data kontak baru kembali ke Halaman Kontak
+    Navigator.pop(context, kontakBaru);
   }
 
   @override
@@ -85,6 +83,9 @@ class _TambahKontakPageState extends State<TambahKontakPage> {
                   if (value == null || value.trim().isEmpty) {
                     return 'Email tidak boleh kosong';
                   }
+                  if (!value.contains('@')) {
+                    return 'Email harus mengandung karakter @';
+                  }
                   return null;
                 },
               ),
@@ -101,6 +102,12 @@ class _TambahKontakPageState extends State<TambahKontakPage> {
                   if (value == null || value.trim().isEmpty) {
                     return 'Nomor handphone tidak boleh kosong';
                   }
+                  if (!RegExp(r'^\d+$').hasMatch(value.trim())) {
+                    return 'Nomor handphone hanya boleh berisi angka';
+                  }
+                  if (value.trim().length < 10) {
+                    return 'Nomor handphone minimal 10 digit';
+                  }
                   return null;
                 },
               ),
@@ -116,7 +123,11 @@ class _TambahKontakPageState extends State<TambahKontakPage> {
               ),
               const SizedBox(height: 24),
               ElevatedButton.icon(
-                onPressed: _simpanKontak,
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _simpanKontak();
+                  }
+                },
                 icon: const Icon(Icons.save),
                 label: const Text('Simpan'),
               ),
