@@ -42,8 +42,12 @@ class KontakPage extends StatelessWidget {
               final kataKunci = (snapshot.data ?? '').toLowerCase();
               final kontakTersaring = daftarKontak.where((kontak) {
                 final nama = kontak.nama.toLowerCase();
+                final email = kontak.email.toLowerCase();
+                final noHp = kontak.noHp.toLowerCase();
                 final kategori = (kontak.kategori ?? '').toLowerCase();
                 return nama.contains(kataKunci) ||
+                    email.contains(kataKunci) ||
+                    noHp.contains(kataKunci) ||
                     kategori.contains(kataKunci);
               }).toList();
 
