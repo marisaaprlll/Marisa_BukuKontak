@@ -21,7 +21,7 @@ class _BerandaPageState extends State<BerandaPage>
   // Data kontak disimpan di sini agar tetap sama saat berpindah tab
   final List<Kontak> _daftarKontak = [];
   final StreamController<String> _searchController =
-      StreamController<String>();
+      StreamController<String>.broadcast();
 
   static const int _tabKontak = 0;
   static const int _tabFavorit = 1;
