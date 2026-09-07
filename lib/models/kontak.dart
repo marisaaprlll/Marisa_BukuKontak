@@ -3,6 +3,7 @@ class Kontak {
   final String nama;
   final String email;
   final String noHp;
+  String? kategori;
 
   String get inisialNamaDepan {
     final namaBersih = nama.trim();
@@ -13,5 +14,6 @@ class Kontak {
     required this.nama,
     required this.email,
     required this.noHp,
+    this.kategori,
   });
 }

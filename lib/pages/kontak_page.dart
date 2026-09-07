@@ -35,7 +35,9 @@ class KontakPage extends StatelessWidget {
               child: Text(kontak.inisialNamaDepan),
             ),
             title: Text(kontak.nama),
-            subtitle: Text('${kontak.email}\n${kontak.noHp}'),
+            subtitle: Text(
+              '${kontak.email}\n${kontak.noHp}\n${kontak.kategori ?? 'Tanpa kategori'}',
+            ),
             isThreeLine: true,
             trailing: IconButton(
               icon: const Icon(Icons.delete, color: Colors.red),

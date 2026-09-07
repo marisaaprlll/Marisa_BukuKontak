@@ -18,12 +18,14 @@ class _TambahKontakPageState extends State<TambahKontakPage> {
   final TextEditingController _namaController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _noHpController = TextEditingController();
+  final TextEditingController _kategoriController = TextEditingController();
 
   @override
   void dispose() {
     _namaController.dispose();
     _emailController.dispose();
     _noHpController.dispose();
+    _kategoriController.dispose();
     super.dispose();
   }
 
@@ -33,6 +35,9 @@ class _TambahKontakPageState extends State<TambahKontakPage> {
         nama: _namaController.text.trim(),
         email: _emailController.text.trim(),
         noHp: _noHpController.text.trim(),
+        kategori: _kategoriController.text.trim().isEmpty
+            ? null
+            : _kategoriController.text.trim(),
       );
 
       // Kirim data kontak baru kembali ke Halaman Kontak
@@ -98,6 +103,16 @@ class _TambahKontakPageState extends State<TambahKontakPage> {
                   }
                   return null;
                 },
+              ),
+              const SizedBox(height: 24),
+              TextFormField(
+                controller: _kategoriController,
+                decoration: const InputDecoration(
+                  labelText: 'Kategori (opsional)',
+                  hintText: 'Contoh: Keluarga, Teman, atau Kerja',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.category),
+                ),
               ),
               const SizedBox(height: 24),
               ElevatedButton.icon(
