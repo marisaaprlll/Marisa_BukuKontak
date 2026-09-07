@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import '../models/kontak.dart';
 import 'kontak_page.dart';
@@ -18,6 +20,8 @@ class _BerandaPageState extends State<BerandaPage>
 
   // Data kontak disimpan di sini agar tetap sama saat berpindah tab
   final List<Kontak> _daftarKontak = [];
+  final StreamController<String> _searchController =
+      StreamController<String>();
 
   static const int _tabKontak = 0;
   static const int _tabFavorit = 1;
@@ -33,6 +37,7 @@ class _BerandaPageState extends State<BerandaPage>
   @override
   void dispose() {
     _tabController.dispose();
+    _searchController.close();
     super.dispose();
   }
 
@@ -143,7 +148,12 @@ class _BerandaPageState extends State<BerandaPage>
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
-          KontakPage(daftarKontak: _daftarKontak, onHapus: _hapusKontak),
+          KontakPage(
+            daftarKontak: _daftarKontak,
+            onHapus: _hapusKontak,
+            searchStream: _searchController.stream,
+            onSearchChanged: (teks) => _searchController.add(teks),
+          ),
           const FavoritPage(),
         ],
       ),

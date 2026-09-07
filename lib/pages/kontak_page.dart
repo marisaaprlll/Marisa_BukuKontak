@@ -8,44 +8,86 @@ import '../models/kontak.dart';
 class KontakPage extends StatelessWidget {
   final List<Kontak> daftarKontak;
   final void Function(int index) onHapus;
+  final Stream<String> searchStream;
+  final ValueChanged<String> onSearchChanged;
 
   const KontakPage({
     super.key,
     required this.daftarKontak,
     required this.onHapus,
+    required this.searchStream,
+    required this.onSearchChanged,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (daftarKontak.isEmpty) {
-      return const Center(
-        child: Text('Belum ada kontak. Tekan tombol (+) untuk menambah.'),  
-      );
-    }
-
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      itemCount: daftarKontak.length,
-      itemBuilder: (context, index) {
-        final kontak = daftarKontak[index];
-        return Card(
-          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          child: ListTile(
-            leading: CircleAvatar(
-              child: Text(kontak.inisialNamaDepan),
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12, 12, 12, 4),
+          child: TextField(
+            decoration: const InputDecoration(
+              labelText: 'Cari kontak',
+              prefixIcon: Icon(Icons.search),
+              border: OutlineInputBorder(),
             ),
-            title: Text(kontak.nama),
-            subtitle: Text(
-              '${kontak.email}\n${kontak.noHp}\n${kontak.kategori ?? 'Tanpa kategori'}',
-            ),
-            isThreeLine: true,
-            trailing: IconButton(
-              icon: const Icon(Icons.delete, color: Colors.red),
-              onPressed: () => onHapus(index),
-            ),
+            onChanged: onSearchChanged,
           ),
-        );
-      },
+        ),
+        Expanded(
+          child: StreamBuilder<String>(
+            stream: searchStream,
+            initialData: '',
+            builder: (context, snapshot) {
+              final kataKunci = (snapshot.data ?? '').toLowerCase();
+              final kontakTersaring = daftarKontak.where((kontak) {
+                final nama = kontak.nama.toLowerCase();
+                final kategori = (kontak.kategori ?? '').toLowerCase();
+                return nama.contains(kataKunci) ||
+                    kategori.contains(kataKunci);
+              }).toList();
+
+              if (kontakTersaring.isEmpty) {
+                return Center(
+                  child: Text(
+                    daftarKontak.isEmpty
+                        ? 'Belum ada kontak. Tekan tombol (+) untuk menambah.'
+                        : 'Kontak tidak ditemukan.',
+                  ),
+                );
+              }
+
+              return ListView.builder(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                itemCount: kontakTersaring.length,
+                itemBuilder: (context, index) {
+                  final kontak = kontakTersaring[index];
+                  return Card(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        child: Text(kontak.inisialNamaDepan),
+                      ),
+                      title: Text(kontak.nama),
+                      subtitle: Text(
+                        '${kontak.email}\n${kontak.noHp}\n${kontak.kategori ?? 'Tanpa kategori'}',
+                      ),
+                      isThreeLine: true,
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () => onHapus(daftarKontak.indexOf(kontak)),
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
